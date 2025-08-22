@@ -16,7 +16,9 @@
 #pragma once
 #include <Eigen/Dense>
 
+#include "adore_ros2_msgs/msg/map_point.hpp"
 #include <adore_ros2_msgs/msg/traffic_participant_set.hpp>
+#include <adore_ros2_msgs/msg/map_point.hpp>
 
 #include "color_palette.hpp"
 #include <geometry_msgs/msg/point.hpp>
@@ -161,6 +163,61 @@ get_acceleration( const P& p )
     return std::nullopt;
   }
 }
+
+template<typename PointList>
+Marker
+create_lane_marker( const PointList& left_lane_points, const PointList& right_lane_points, const std::string& ns, int id, const Color& color )
+{
+  Marker marker;
+
+  if ( left_lane_points.size() == right_lane_points.size() )
+    return marker;
+
+  // if( points.size() < 3 )
+  //   return marker; // Not enough points to form a line.
+
+  marker.ns     = ns;
+  marker.id     = id;
+  marker.type   = Marker::TRIANGLE_LIST; // Using triangles to form quads
+  marker.action = Marker::ADD;
+
+  // Base color (used if we can't color per-vertex).
+  marker.color.r = color[0];
+  marker.color.g = color[1];
+  marker.color.b = color[2];
+  marker.color.a = color[3];
+
+
+  for ( size_t i = 0; i < left_lane_points.size(); i++ )
+  {
+    geometry_msgs::msg::Point p1, p2, p3, p4;
+    p1.x = left_lane_points[i].x;
+    p1.y = left_lane_points[i].y;
+    p1.z = 0.5;
+    p2.x = right_lane_points[i].x;
+    p2.y = right_lane_points[i].y;
+    p2.z = 0.5;
+    p3.x = left_lane_points[i].x;
+    p3.y = left_lane_points[i].y;
+    p3.z = 0.5;
+    p4.x = right_lane_points[i].x;
+    p4.y = right_lane_points[i].y;
+    p4.z = 0.5;
+
+    // Tri 1: (p1, p2, p3)
+    marker.points.push_back( p1 );
+    marker.points.push_back( p2 );
+    marker.points.push_back( p3 );
+
+    // Tri 2: (p2, p4, p3)
+    marker.points.push_back( p2 );
+    marker.points.push_back( p4 );
+    marker.points.push_back( p3 );
+  }
+
+  return marker;
+}
+
 
 template<typename IterablePoints>
 Marker
