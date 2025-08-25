@@ -16,7 +16,6 @@
 #pragma once
 #include <Eigen/Dense>
 
-#include "adore_ros2_msgs/msg/map_point.hpp"
 #include <adore_ros2_msgs/msg/traffic_participant_set.hpp>
 #include <adore_ros2_msgs/msg/map_point.hpp>
 
@@ -115,7 +114,8 @@ create_line_marker( const IterablePoints& points, const std::string& ns, int id,
     geometry_msgs::msg::Point marker_point;
     marker_point.x = point.x;
     marker_point.y = point.y;
-    marker_point.z = 0.5;
+    // marker_point.z = 0.5;
+    marker_point.z = 0.0;
 
     marker.points.push_back( marker_point );
   }
@@ -170,11 +170,11 @@ create_lane_marker( const PointList& left_lane_points, const PointList& right_la
 {
   Marker marker;
 
-  if ( left_lane_points.size() == right_lane_points.size() )
+  if ( left_lane_points.size() != right_lane_points.size() )
     return marker;
 
-  // if( points.size() < 3 )
-  //   return marker; // Not enough points to form a line.
+  if( left_lane_points.size() < 3 || right_lane_points.size() < 3)
+    return marker; // Not enough points to form a line.
 
   marker.ns     = ns;
   marker.id     = id;
@@ -187,22 +187,21 @@ create_lane_marker( const PointList& left_lane_points, const PointList& right_la
   marker.color.b = color[2];
   marker.color.a = color[3];
 
-
-  for ( size_t i = 0; i < left_lane_points.size(); i++ )
+  for ( size_t i = 0; i < left_lane_points.size() - 1; i++ )
   {
     geometry_msgs::msg::Point p1, p2, p3, p4;
     p1.x = left_lane_points[i].x;
     p1.y = left_lane_points[i].y;
-    p1.z = 0.5;
+    p1.z = 0.0;
     p2.x = right_lane_points[i].x;
     p2.y = right_lane_points[i].y;
-    p2.z = 0.5;
-    p3.x = left_lane_points[i].x;
-    p3.y = left_lane_points[i].y;
-    p3.z = 0.5;
-    p4.x = right_lane_points[i].x;
-    p4.y = right_lane_points[i].y;
-    p4.z = 0.5;
+    p2.z = 0.0;
+    p3.x = left_lane_points[i + 1].x;
+    p3.y = left_lane_points[i + 1].y;
+    p3.z = 0.0;
+    p4.x = right_lane_points[i + 1].x;
+    p4.y = right_lane_points[i + 1].y;
+    p4.z = 0.0;
 
     // Tri 1: (p1, p2, p3)
     marker.points.push_back( p1 );

@@ -52,6 +52,10 @@ constexpr Color soft_yellow = { 0.737f, 0.741f, 0.133f, 0.7f }; // #BCBD22
 constexpr Color soft_cyan   = { 0.090f, 0.745f, 0.812f, 0.7f }; // #17BECF
 constexpr Color soft_black  = { 0.0f, 0.0f, 0.0f, 0.7f };       // #000000
 
+constexpr Color dark_gray = { 0.16f, 0.16f, 0.16f, 1.0f};
+
+constexpr Color very_dark_gray = { 0.2f, 0.2f, 0.2f, 1.0f};
+
 } // namespace colors
 
 // Function to convert HSV to RGB

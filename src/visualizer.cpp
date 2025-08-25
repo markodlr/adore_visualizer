@@ -104,6 +104,7 @@ void
 Visualizer::low_frequency_timer_callback()
 {
   update_all_dynamic_subscriptions();
+
   if( !visualization_offset_center )
     return;
   publish_map_image();

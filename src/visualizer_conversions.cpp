@@ -46,24 +46,27 @@ to_marker_array( const adore_ros2_msgs::msg::Map& local_map_msg )
 {
   MarkerArray marker_array;
 
+  // auto local_map = map::conversions::to_cpp_type( local_map_msg );
+  // local_map.lanes[0]->borders.outer.points
+  
   for( const auto& road : local_map_msg.roads )
   {
     for( const auto& lane : road.lanes )
     {
-      auto inner_marker      = primitives::create_line_marker( lane.inner_points, "inner", lane.id, 0.15, colors::white );
-      auto outer_marker      = primitives::create_line_marker( lane.outer_points, "outer", lane.id, 0.15, colors::white );
+      auto inner_marker      = primitives::create_line_marker( lane.inner_points, "inner", lane.id, 0.3, colors::very_dark_gray );
+      auto outer_marker      = primitives::create_line_marker( lane.outer_points, "outer", lane.id, 0.3, colors::very_dark_gray );
       // auto center_marker     = primitives::create_line_marker( lane.center_points, "center", lane.id, 0.1, colors::gray );
-      // auto road_marker = primitives::create_flat_line_marker( lane.center_points, "road", lane.id, 2.0, colors::gray);
-      auto road_marker = primitives::create_lane_marker(lane.inner_points, lane.outer_points, "road", lane.id, colors::gray);
+      // auto lane_marker = primitives::create_flat_line_marker( lane.center_points, "road", lane.id, 2.0, colors::gray);
+      auto lane_marker = primitives::create_lane_marker(lane.inner_points, lane.outer_points, "road", lane.id, colors::dark_gray);
       inner_marker.lifetime  = rclcpp::Duration::from_seconds( 5.0 );
       outer_marker.lifetime  = rclcpp::Duration::from_seconds( 5.0 );
       // center_marker.lifetime = rclcpp::Duration::from_seconds( 5.0 );
-      road_marker.lifetime = rclcpp::Duration::from_seconds( 5.0 );
+      lane_marker.lifetime = rclcpp::Duration::from_seconds( 5.0 );
 
       marker_array.markers.push_back( inner_marker );
       marker_array.markers.push_back( outer_marker );
       // marker_array.markers.push_back( center_marker );
-      marker_array.markers.push_back( road_marker );
+      marker_array.markers.push_back( lane_marker );
     }
   }
 
