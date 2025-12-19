@@ -364,6 +364,54 @@ to_marker_array( const adore_ros2_msgs::msg::VisualizableObject& msg )
 }
 
 MarkerArray
+to_marker_array( const adore_ros2_msgs::msg::DrivableArea& drivable_area )
+{
+  MarkerArray marker_array;
+
+  // Nothing to visualize
+  if( drivable_area.left_boundary.empty() && drivable_area.right_boundary.empty() && drivable_area.reference_line.empty() )
+  {
+    return marker_array;
+  }
+
+  int id = 0;
+
+  // 1) Filled lane between left and right boundaries
+  if( drivable_area.left_boundary.size() >= 2 && drivable_area.right_boundary.size() >= 2 )
+  {
+    Marker lane_marker = primitives::create_lane_marker( drivable_area.left_boundary, drivable_area.right_boundary, "drivable_area_lane",
+                                                         id++, colors::soft_orange );
+    marker_array.markers.push_back( lane_marker );
+  }
+
+  // // 2) Left boundary outline
+  // if( drivable_area.left_boundary.size() >= 2 )
+  // {
+  //   Marker left_marker = primitives::create_flat_line_marker( drivable_area.left_boundary, "drivable_area_left_boundary", id++, 0.2,
+  //                                                             colors::soft_orange );
+  //   marker_array.markers.push_back( left_marker );
+  // }
+
+  // // 3) Right boundary outline
+  // if( drivable_area.right_boundary.size() >= 2 )
+  // {
+  //   Marker right_marker = primitives::create_flat_line_marker( drivable_area.right_boundary, "drivable_area_right_boundary", id++, 0.2,
+  //                                                              colors::soft_orange );
+  //   marker_array.markers.push_back( right_marker );
+  // }
+
+  // 4) Reference line
+  if( drivable_area.reference_line.size() >= 2 )
+  {
+    Marker ref_marker = primitives::create_flat_line_marker( drivable_area.reference_line, "drivable_area_reference_line", id++, 0.15,
+                                                             colors::purple );
+    marker_array.markers.push_back( ref_marker );
+  }
+
+  return marker_array;
+}
+
+MarkerArray
 to_marker_array( const adore_ros2_msgs::msg::CautionZone& caution_zone )
 {
   MarkerArray marker_array;

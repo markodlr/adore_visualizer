@@ -68,6 +68,7 @@ Visualizer::update_all_dynamic_subscriptions()
   update_dynamic_subscriptions<adore_ros2_msgs::msg::Trajectory>( "adore_ros2_msgs/msg/Trajectory" );
   update_dynamic_subscriptions<adore_ros2_msgs::msg::VisualizableObject>( "adore_ros2_msgs/msg/VisualizableObject" );
   update_dynamic_subscriptions<adore_ros2_msgs::msg::VehicleStateDynamic>( "adore_ros2_msgs/msg/VehicleStateDynamic" );
+  update_dynamic_subscriptions<adore_ros2_msgs::msg::DrivableArea>( "adore_ros2_msgs/msg/DrivableArea" );
 }
 
 void

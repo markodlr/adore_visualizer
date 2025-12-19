@@ -19,6 +19,7 @@
 #include "adore_ros2_msgs/msg/route.hpp"
 #include "adore_ros2_msgs/msg/trajectory.hpp"
 #include <adore_ros2_msgs/msg/caution_zone.hpp>
+#include <adore_ros2_msgs/msg/drivable_area.hpp>
 #include <adore_ros2_msgs/msg/safety_corridor.hpp>
 #include <adore_ros2_msgs/msg/traffic_participant_set.hpp>
 #include <adore_ros2_msgs/msg/traffic_prediction.hpp>
@@ -72,6 +73,8 @@ MarkerArray to_marker_array( const adore_ros2_msgs::msg::CautionZone& caution_zo
 MarkerArray to_marker_array( const adore_ros2_msgs::msg::Waypoints& waypoints_msg );
 
 MarkerArray to_marker_array( const adore_ros2_msgs::msg::VisualizableObject& msg );
+
+MarkerArray to_marker_array( const adore_ros2_msgs::msg::DrivableArea& msg );
 
 NavSatFix to_nav_sat_fix( const adore_ros2_msgs::msg::VehicleStateDynamic& vehicle_state_dynamic );
 
